@@ -1,0 +1,42 @@
+---
+gather_daily_ai_news:
+  description: Search for the top 5 AI news from the past 24 hours. Focus on finding
+    the most significant developments in artificial intelligence including breakthrough
+    technologies, company announcements, research papers, and industry updates from
+    reliable sources.
+  expected_output: 'A formatted list of top 5 AI news items from the past 24 hours,
+    each containing: title, summary, source, publication date, and URL. Format should
+    be ready for document inclusion.'
+  agent: ai_news_researcher
+update_monthly_ai_news_document:
+  description: Create or update the monthly AI news Word document with today's findings.
+    The document should be named with current month and year format (e.g., 'January_2025_AI_News.docx').
+    If it's a new month, create a new document. If the document exists for current
+    month, append today's news to it. Ensure proper formatting and date headers.
+  expected_output: Successfully created or updated Word Document with today's AI news.
+    Include document ID and confirmation that news has been properly formatted and
+    added with today's date as header.
+  agent: document_manager
+  context:
+  - gather_daily_ai_news
+generate_document_share_link:
+  description: Create a shareable link for the updated AI news Word document in OneDrive.
+    Ensure the link provides view access to anyone with the link so it can be shared
+    via email.
+  expected_output: A shareable OneDrive link to the AI news Word document that allows
+    public view access. Include the direct link URL that can be used in email.
+  agent: file_repository_manager
+  context:
+  - update_monthly_ai_news_document
+send_daily_ai_news_email:
+  description: Send a professional email via Outlook to the registered email address
+    with today's AI news summary and the shareable link to the monthly Word document.
+    Include a brief summary of today's top AI stories and the direct OneDrive link
+    to access the full document.
+  expected_output: Successfully sent email confirmation with subject \"Daily AI News
+    Update - [Current Date]\" containing news summary and OneDrive document link to
+    the registered email address.
+  agent: email_communication_manager
+  context:
+  - generate_document_share_link
+  - gather_daily_ai_news
